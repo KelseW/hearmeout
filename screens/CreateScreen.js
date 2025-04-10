@@ -13,21 +13,20 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Feather';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebaseConfig';
 
 const CreateScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleCreateAccount = async () => {
     try {
-      await AsyncStorage.setItem('username', name);
-      await AsyncStorage.setItem('password', password);
+      await createUserWithEmailAndPassword(auth, email, password);
       Alert.alert('Success', 'Account created!');
       navigation.goBack();
     } catch (e) {
-      Alert.alert('Error', 'Failed to save account');
+      Alert.alert('Error', e.message);
     }
   };
 
@@ -35,8 +34,7 @@ const CreateScreen = ({ navigation }) => {
     <KeyboardAwareScrollView
       style={styles.scrollView}
       contentContainerStyle={styles.container}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
+      enableOnAndroid
       extraScrollHeight={Platform.OS === 'ios' ? 55 : 120}
       keyboardShouldPersistTaps="handled"
     >
@@ -48,13 +46,6 @@ const CreateScreen = ({ navigation }) => {
           <Image source={require('../images/logo.png')} style={styles.logo} />
 
           <View style={styles.middle}>
-            <TextInput
-              style={styles.input}
-              placeholder="Username"
-              placeholderTextColor="#666"
-              value={name}
-              onChangeText={setName}
-            />
             <TextInput
               style={styles.input}
               placeholder="Email"

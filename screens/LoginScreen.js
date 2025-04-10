@@ -9,26 +9,22 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Alert
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebaseConfig';
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      const storedUsername = await AsyncStorage.getItem('username');
-      const storedPassword = await AsyncStorage.getItem('password');
-
-      if (username === storedUsername && password === storedPassword) {
-        navigation.navigate('MainScreen', { username });
-      } else {
-        alert('Invalid username or password');
-      }
+      await signInWithEmailAndPassword(auth, email, password);
+      navigation.navigate('MainScreen', { username: email });
     } catch (e) {
-      alert('Login failed');
+      Alert.alert('Login Failed', e.message);
     }
   };
 
@@ -36,8 +32,7 @@ const LoginScreen = ({ navigation }) => {
     <KeyboardAwareScrollView
       style={styles.scrollView}
       contentContainerStyle={styles.container}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
+      enableOnAndroid
       extraScrollHeight={Platform.OS === 'ios' ? 55 : 120}
       keyboardShouldPersistTaps="handled"
     >
@@ -48,10 +43,10 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.middle}>
             <TextInput
               style={styles.input}
-              placeholder="Username"
+              placeholder="Email"
               placeholderTextColor="#666"
-              value={username}
-              onChangeText={setUsername}
+              value={email}
+              onChangeText={setEmail}
             />
             <TextInput
               style={styles.input}
