@@ -4,6 +4,7 @@ import * as FileSystem from 'expo-file-system';
 import Icon from 'react-native-vector-icons/Feather';
 
 const ProfileScreen = ({ route, navigation }) => {
+  const { username } = route.params || { username: 'Guest' };
   const [logs, setLogs] = useState('');
 
   const loadLogs = async () => {
@@ -41,11 +42,11 @@ const ProfileScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('MainScreen')}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Icon name="arrow-left" size={30} color="#000" />
       </TouchableOpacity>
       
-      <Text style={styles.welcomeText}>Welcome Kelsey</Text>
+      <Text style={styles.welcomeText}>Welcome {username}</Text>
 
       <TouchableOpacity style={styles.button} onPress={loadLogs}>
         <Text style={styles.buttonText}>Saved logs</Text>

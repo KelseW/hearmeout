@@ -9,26 +9,25 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Alert
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+const CreateScreen = ({ navigation }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
+  const handleCreateAccount = async () => {
     try {
-      const storedUsername = await AsyncStorage.getItem('username');
-      const storedPassword = await AsyncStorage.getItem('password');
-
-      if (username === storedUsername && password === storedPassword) {
-        navigation.navigate('MainScreen', { username });
-      } else {
-        alert('Invalid username or password');
-      }
+      await AsyncStorage.setItem('username', name);
+      await AsyncStorage.setItem('password', password);
+      Alert.alert('Success', 'Account created!');
+      navigation.goBack();
     } catch (e) {
-      alert('Login failed');
+      Alert.alert('Error', 'Failed to save account');
     }
   };
 
@@ -43,6 +42,9 @@ const LoginScreen = ({ navigation }) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Icon name="arrow-left" size={30} color="#000" />
+          </TouchableOpacity>
           <Image source={require('../images/logo.png')} style={styles.logo} />
 
           <View style={styles.middle}>
@@ -50,8 +52,16 @@ const LoginScreen = ({ navigation }) => {
               style={styles.input}
               placeholder="Username"
               placeholderTextColor="#666"
-              value={username}
-              onChangeText={setUsername}
+              value={name}
+              onChangeText={setName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#666"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
             />
             <TextInput
               style={styles.input}
@@ -61,16 +71,9 @@ const LoginScreen = ({ navigation }) => {
               value={password}
               onChangeText={setPassword}
             />
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateScreen')}>
+            <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
               <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
-          </View>
-
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>© Kelsey Wemhoener 2025</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -81,20 +84,25 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: '#ADD8E6', // Main screen bg
+    backgroundColor: '#ADD8E6',
   },
   container: {
     flexGrow: 1,
-    backgroundColor: '#ADD8E6', // ScrollView content area
+    backgroundColor: '#ADD8E6',
   },
   inner: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ADD8E6', // Inner content wrapper
+    backgroundColor: '#ADD8E6',
     paddingHorizontal: 20,
     paddingTop: 30,
     paddingBottom: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
   },
   logo: {
     width: 500,
@@ -127,14 +135,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  footer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  footerText: {
-    fontSize: 12,
-    color: '#808080',
-  },
 });
 
-export default LoginScreen;
+export default CreateScreen;

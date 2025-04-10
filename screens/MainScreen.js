@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Pressable, Dimensions, Platform, Alert, Share } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Pressable, Dimensions, Platform, Alert, Share, Route } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import Voice from '@react-native-voice/voice';
 import * as FileSystem from 'expo-file-system';
+import * as Speech from 'expo-speech';
 
 const { height: screenHeight } = Dimensions.get('window');
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = ({ navigation, route }) => {
   const [text, setText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
 
@@ -56,6 +57,15 @@ const MainScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Save error:', error);
       Alert.alert('Error', 'Failed to save the log.');
+    }
+  };
+
+  const handleSpeak = () => {
+    if (text.trim()) {
+      Speech.speak(text, {
+        voice: 'com.apple.ttsbundle.Samantha-compact', // common English voice
+      })} else {
+      Alert.alert('Nothing to speak', 'Please enter or dictate some text first.');
     }
   };
 
@@ -121,7 +131,7 @@ const MainScreen = ({ navigation }) => {
           <Text style={styles.headerButtonText}>Export</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProfileScreen')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProfileScreen', { username: route.params?.username || 'Guest' })}>
           <Icon name="user" size={30} color="#000" />
           <Text style={styles.headerButtonText}>Profile</Text>
         </TouchableOpacity>
@@ -148,7 +158,7 @@ const MainScreen = ({ navigation }) => {
           <Text style={styles.footerButtonText}>{isRecording ? 'Stop' : 'Record'}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSpeak}>
           <Icon name="volume-2" size={30} color="#000" />
           <Text style={styles.footerButtonText}>Speak</Text>
         </TouchableOpacity>

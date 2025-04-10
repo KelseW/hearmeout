@@ -36,6 +36,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - ExpoSpeech (13.0.1):
+    - ExpoModulesCore
   - fast_float (6.1.4)
   - FBLazyVector (0.76.9)
   - fmt (11.0.2)
@@ -1661,6 +1663,27 @@ PODS:
     - React-logger
     - React-perflogger
     - React-utils (= 0.76.9)
+  - RNCAsyncStorage (1.23.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.10.14.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNGestureHandler (2.20.2):
     - DoubleConversion
     - glog
@@ -1827,6 +1850,7 @@ DEPENDENCIES:
   - ExpoFont (from `../node_modules/expo-font/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoSpeech (from `../node_modules/expo-speech/ios`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -1892,6 +1916,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1920,6 +1945,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoSpeech:
+    :path: "../node_modules/expo-speech/ios"
   fast_float:
     :podspec: "../node_modules/react-native/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
@@ -2047,6 +2074,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -2066,6 +2095,7 @@ SPEC CHECKSUMS:
   ExpoFont: f354e926f8feae5e831ec8087f36652b44a0b188
   ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
   ExpoModulesCore: c25d77625038b1968ea1afefc719862c0d8dd993
+  ExpoSpeech: 8f74347608243ee8fdc2faa14e7d2cd5503f33f8
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 7605ea4810e0e10ae4815292433c09bf4324ba45
   fmt: 01b82d4ca6470831d1cc0852a1af644be019e8f6
@@ -2129,6 +2159,7 @@ SPEC CHECKSUMS:
   React-utils: ed818f19ab445000d6b5c4efa9d462449326cc9f
   ReactCodegen: f853a20cc9125c5521c8766b4b49375fec20648b
   ReactCommon: 300d8d9c5cb1a6cd79a67cf5d8f91e4d477195f9
+  RNCAsyncStorage: 66991bb6672ed988a8c56289a08bf4fc3a29d4b3
   RNGestureHandler: fffddeb8af59709c6d8de11b6461a6af63cad532
   RNReanimated: 2e5069649cbab2c946652d3b97589b2ae0526220
   RNScreens: 362f4c861dd155f898908d5035d97b07a3f1a9d1
