@@ -130,7 +130,7 @@ const MainScreen = ({ navigation }) => {
       
       <TextInput
         style={styles.textBox}
-        placeholder="Type something or use the mic..."
+        placeholder="Type something or use the microphone..."
         placeholderTextColor="#666"
         value={text}
         onChangeText={setText}
