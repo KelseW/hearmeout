@@ -2,40 +2,65 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import Icon from 'react-native-vector-icons/Feather';
+import { db } from '../firebaseConfig';
+import { collection, query, where, orderBy, getDocs, deleteDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const ProfileScreen = ({ route, navigation }) => {
   const { username } = route.params || { username: 'Guest' };
   const [logs, setLogs] = useState('');
 
   const loadLogs = async () => {
-    const fileUri = FileSystem.documentDirectory + 'savedfiles/logs.txt';
+    const user = getAuth().currentUser;
+    if (!user) {
+      alert('You must be logged in to load logs.');
+      return;
+    }
+
     try {
-      const fileInfo = await FileSystem.getInfoAsync(fileUri);
-      if (!fileInfo.exists) {
+      const q = query(
+        collection(db, 'transcriptions'),
+        where('uid', '==', user.uid),
+        orderBy('createdAt', 'desc')
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
         setLogs('No logs found.');
         return;
       }
-      const content = await FileSystem.readAsStringAsync(fileUri);
-      setLogs(content || 'No logs available.');
+
+      const allLogs = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return `[${data.createdAt.toDate().toLocaleString()}]\n${data.text}`;
+      }).join('\n\n');
+
+      setLogs(allLogs);
     } catch (error) {
-      console.error('Error reading logs:', error);
+      console.error('Error loading logs from Firebase:', error);
       setLogs('Failed to load logs.');
     }
   };
 
   const deleteLogs = async () => {
-    const fileUri = FileSystem.documentDirectory + 'savedfiles/logs.txt';
+    const user = getAuth().currentUser;
+    if (!user) {
+      alert('You must be logged in to delete logs.');
+      return;
+    }
+
     try {
-      const fileInfo = await FileSystem.getInfoAsync(fileUri);
-      if (fileInfo.exists) {
-        await FileSystem.deleteAsync(fileUri);
-        setLogs('');
-        alert('All logs deleted.');
-      } else {
-        alert('No logs to delete.');
-      }
+      const q = query(
+        collection(db, 'transcriptions'),
+        where('uid', '==', user.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+      await Promise.all(deletePromises);
+      setLogs('');
+      alert('All logs deleted from Firebase.');
     } catch (error) {
-      console.error('Error deleting logs:', error);
+      console.error('Error deleting logs from Firebase:', error);
       alert('Failed to delete logs.');
     }
   };
@@ -53,7 +78,7 @@ const ProfileScreen = ({ route, navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={deleteLogs}>
-        <Text style={styles.buttonText}>Delete all logs</Text>
+        <Text style={styles.buttonText}>Delete all saved logs</Text>
       </TouchableOpacity>
 
       {logs !== '' && (

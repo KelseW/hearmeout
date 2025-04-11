@@ -4,6 +4,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import Voice from '@react-native-voice/voice';
 import * as FileSystem from 'expo-file-system';
 import * as Speech from 'expo-speech';
+import { db } from '../firebaseConfig';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -28,35 +31,28 @@ const MainScreen = ({ navigation, route }) => {
   };
 
   const handleSave = async () => {
-    const dirUri = FileSystem.documentDirectory + 'savedfiles';
-    const fileUri = dirUri + '/logs.txt';
-  
+    const user = getAuth().currentUser;
+
+    if (!user) {
+      Alert.alert('Not logged in', 'You must be logged in to save transcriptions.');
+      return;
+    }
+
+    if (!text.trim()) {
+      Alert.alert('Empty Text', 'There is no text to save.');
+      return;
+    }
+
     try {
-      const dirInfo = await FileSystem.getInfoAsync(dirUri);
-      if (!dirInfo.exists) {
-        await FileSystem.makeDirectoryAsync(dirUri, { intermediates: true });
-      }
-  
-      const timestamp = new Date().toISOString();
-      const entry = `\n[${timestamp}]\n${text}\n`;
-  
-      // Read existing contents
-      let existing = '';
-      const fileInfo = await FileSystem.getInfoAsync(fileUri);
-      if (fileInfo.exists) {
-        existing = await FileSystem.readAsStringAsync(fileUri);
-      }
-  
-      // Append and write the full content back
-      const newContent = existing + entry;
-      await FileSystem.writeAsStringAsync(fileUri, newContent, {
-        encoding: FileSystem.EncodingType.UTF8,
+      await addDoc(collection(db, 'transcriptions'), {
+        uid: user.uid,
+        text,
+        createdAt: Timestamp.now()
       });
-  
-      Alert.alert('Saved', 'Log saved successfully.');
+      Alert.alert('Saved', 'Transcription saved.');
     } catch (error) {
       console.error('Save error:', error);
-      Alert.alert('Error', 'Failed to save the log.');
+      Alert.alert('Error', 'Failed to save transcription.');
     }
   };
 
