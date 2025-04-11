@@ -64,7 +64,6 @@ const MainScreen = ({ navigation, route }) => {
     }
   };
 
-  // Voice setup
   useEffect(() => {
     Voice.onSpeechResults = onSpeechResults;
     Voice.onSpeechError = onSpeechError;

@@ -76,17 +76,17 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: '#ADD8E6', // Main screen bg
+    backgroundColor: '#ADD8E6',
   },
   container: {
     flexGrow: 1,
-    backgroundColor: '#ADD8E6', // ScrollView content area
+    backgroundColor: '#ADD8E6',
   },
   inner: {
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#ADD8E6', // Inner content wrapper
+    backgroundColor: '#ADD8E6',
     paddingHorizontal: 20,
     paddingTop: 30,
     paddingBottom: 20,

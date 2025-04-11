@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 30, // Reduced from 60 to 30
+    paddingTop: 30,
     paddingBottom: 40,
   },
   logo: {
     width: 500,
     height: 500,
-    marginTop: -20, // Nudges it further up
+    marginTop: -20,
   },
   middle: {
     alignItems: 'center',
