@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Pressable, Dimensions, Platform, Alert, Share, Route } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import Voice from '@react-native-voice/voice';
-import * as FileSystem from 'expo-file-system';
 import * as Speech from 'expo-speech';
 import { db } from '../firebaseConfig';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
@@ -59,7 +58,7 @@ const MainScreen = ({ navigation, route }) => {
   const handleSpeak = () => {
     if (text.trim()) {
       Speech.speak(text, {
-        voice: 'com.apple.ttsbundle.Samantha-compact', // common English voice
+        voice: 'com.apple.ttsbundle.Samantha-compact',
       })} else {
       Alert.alert('Nothing to speak', 'Please enter or dictate some text first.');
     }
@@ -87,7 +86,7 @@ const MainScreen = ({ navigation, route }) => {
 
   const startRecording = async () => {
     try {
-      await Voice.start('en-GB'); // or 'en-US'
+      await Voice.start('en-GB');
       setIsRecording(true);
     } catch (error) {
       console.error('Start error:', error);
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: screenHeight * 0.125, // thinner than footer
+    height: screenHeight * 0.125,
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',

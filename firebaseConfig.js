@@ -16,11 +16,11 @@ const firebaseConfig = {
 
 const db = getFirestore(app);
 
-// Initialize Firebase
+// Initialise Firebase
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-// Initialise auth once
+// Initialise auth
 let auth;
 try {
   auth = getAuth(app);
