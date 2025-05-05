@@ -13,16 +13,19 @@ const firebaseConfig = {
   appId: "1:916354802966:web:69f86425cf0568124e1c37"
 };
 
-const db = getFirestore(app);
-
+// Initialize Firebase app
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+// Initialize Firestore
+const db = getFirestore(app);
 
 let auth;
 try {
+  // Initialize Firebase Authentication
   auth = getAuth(app);
 } catch (e) {
   auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(AsyncStorage)
+    persistence: getReactNativePersistence(AsyncStorage),
   });
 }
 
