@@ -12,10 +12,10 @@ const SplashScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.footerText}>© Kelsey Wemhoener 2025</Text>
+      <Text style={styles.footerText}>© Kelsey Wemhoener 2025-2026</Text>
     </View>
   );
-};
+}; 
 
 const styles = StyleSheet.create({
   container: {
